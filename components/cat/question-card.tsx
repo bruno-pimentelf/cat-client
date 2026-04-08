@@ -28,24 +28,14 @@ export function QuestionCard({
   const [submitted, setSubmitted] = useState(false);
   const feedbackRef = useRef<HTMLDivElement>(null);
 
-  // Quando recebe feedback, scroll para ele e agendar transição
+  // Quando recebe feedback, scroll para ele
   useEffect(() => {
     if (feedback && submitted) {
-      // Scroll suave até o feedback
       setTimeout(() => {
         feedbackRef.current?.scrollIntoView({ behavior: "smooth", block: "center" });
       }, 100);
-
-      // Após 3s, avançar para próxima questão
-      const timer = setTimeout(() => {
-        setSelected(null);
-        setSubmitted(false);
-        onFeedbackDone();
-      }, 3500);
-
-      return () => clearTimeout(timer);
     }
-  }, [feedback, submitted, onFeedbackDone]);
+  }, [feedback, submitted]);
 
   // Resetar estado quando muda o item
   useEffect(() => {
@@ -204,11 +194,22 @@ export function QuestionCard({
               dangerouslySetInnerHTML={{ __html: feedback.feedback }}
             />
           )}
-          <div className="mt-3 ml-8 flex items-center gap-2 text-[11px] opacity-60">
-            <div className="h-3 w-3 animate-spin rounded-full border border-current border-t-transparent" />
-            Próxima questão...
-          </div>
         </div>
+      )}
+
+      {/* Botão próxima questão (aparece após feedback carregar) */}
+      {showingFeedback && (
+        <Button
+          onClick={() => {
+            setSelected(null);
+            setSubmitted(false);
+            onFeedbackDone();
+          }}
+          size="lg"
+          className="w-full rounded-xl h-12 text-sm font-medium animate-in fade-in duration-300"
+        >
+          Próxima Questão
+        </Button>
       )}
     </div>
   );
