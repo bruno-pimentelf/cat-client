@@ -31,7 +31,6 @@ export function ItemCurveHero() {
     return points.join(" ");
   }, [a, b, c, cw, ch]);
 
-  // Mark b on the curve
   const bX = pad.left + ((b + 4) / 8) * cw;
   const bP = prob3pl(b, a, b, c);
   const bY = pad.top + (1 - bP) * ch;
@@ -39,127 +38,32 @@ export function ItemCurveHero() {
   return (
     <div className="rounded-2xl border border-foreground/[0.06] bg-foreground/[0.02] p-5 backdrop-blur-sm">
       <p className="text-[11px] font-semibold uppercase tracking-[0.12em] text-muted-foreground mb-4">
-        Curva Caracteristica do Item (CCI)
+        Curva Característica do Item (CCI)
       </p>
 
       <svg viewBox={`0 0 ${width} ${height}`} className="w-full">
-        {/* Grid */}
         {[0, 0.25, 0.5, 0.75, 1].map((v) => (
-          <line
-            key={v}
-            x1={pad.left}
-            y1={pad.top + (1 - v) * ch}
-            x2={width - pad.right}
-            y2={pad.top + (1 - v) * ch}
-            className="stroke-foreground/[0.06]"
-            strokeDasharray={v === 0 || v === 1 ? "none" : "3 3"}
-          />
+          <line key={v} x1={pad.left} y1={pad.top + (1 - v) * ch} x2={width - pad.right} y2={pad.top + (1 - v) * ch} className="stroke-foreground/[0.06]" strokeDasharray={v === 0 || v === 1 ? "none" : "3 3"} />
         ))}
-
-        {/* c line */}
-        <line
-          x1={pad.left}
-          y1={pad.top + (1 - c) * ch}
-          x2={width - pad.right}
-          y2={pad.top + (1 - c) * ch}
-          stroke="var(--color-destructive)"
-          strokeDasharray="4 4"
-          opacity={0.3}
-        />
-        <text
-          x={width - pad.right + 2}
-          y={pad.top + (1 - c) * ch + 3}
-          fontSize={9}
-          className="fill-destructive/60"
-        >
-          c
-        </text>
-
-        {/* Axes */}
+        <line x1={pad.left} y1={pad.top + (1 - c) * ch} x2={width - pad.right} y2={pad.top + (1 - c) * ch} stroke="var(--color-destructive)" strokeDasharray="4 4" opacity={0.3} />
+        <text x={width - pad.right + 2} y={pad.top + (1 - c) * ch + 3} fontSize={9} className="fill-destructive/60">c</text>
         <line x1={pad.left} y1={pad.top} x2={pad.left} y2={pad.top + ch} className="stroke-foreground/10" />
         <line x1={pad.left} y1={pad.top + ch} x2={pad.left + cw} y2={pad.top + ch} className="stroke-foreground/10" />
-
-        {/* Y labels */}
         {[0, 0.5, 1].map((v) => (
-          <text
-            key={v}
-            x={pad.left - 6}
-            y={pad.top + (1 - v) * ch + 3}
-            textAnchor="end"
-            fontSize={10}
-            className="fill-muted-foreground"
-          >
-            {v}
-          </text>
+          <text key={v} x={pad.left - 6} y={pad.top + (1 - v) * ch + 3} textAnchor="end" fontSize={10} className="fill-muted-foreground">{v}</text>
         ))}
-
-        {/* X labels */}
         {[-4, -2, 0, 2, 4].map((v) => (
-          <text
-            key={v}
-            x={pad.left + ((v + 4) / 8) * cw}
-            y={height - pad.bottom + 18}
-            textAnchor="middle"
-            fontSize={10}
-            className="fill-muted-foreground"
-          >
-            {v}
-          </text>
+          <text key={v} x={pad.left + ((v + 4) / 8) * cw} y={height - pad.bottom + 18} textAnchor="middle" fontSize={10} className="fill-muted-foreground">{v}</text>
         ))}
-
-        {/* Axis labels */}
-        <text
-          x={pad.left + cw / 2}
-          y={height - 2}
-          textAnchor="middle"
-          fontSize={10}
-          className="fill-muted-foreground/60"
-        >
-          Proficiencia (θ)
-        </text>
-        <text
-          x={10}
-          y={pad.top + ch / 2}
-          textAnchor="middle"
-          fontSize={10}
-          className="fill-muted-foreground/60"
-          transform={`rotate(-90, 10, ${pad.top + ch / 2})`}
-        >
-          P(θ)
-        </text>
-
-        {/* Curve */}
-        <motion.path
-          d={curve}
-          fill="none"
-          stroke="var(--color-primary)"
-          strokeWidth={2.5}
-          strokeLinecap="round"
-          initial={{ pathLength: 0 }}
-          animate={{ pathLength: 1 }}
-          transition={{ duration: 1.5, ease: [0.32, 0.72, 0, 1] }}
-        />
-
-        {/* b marker */}
-        <motion.circle
-          cx={bX}
-          cy={bY}
-          r={5}
-          fill="var(--color-primary)"
-          stroke="var(--color-background)"
-          strokeWidth={2}
-          initial={{ scale: 0 }}
-          animate={{ scale: 1 }}
-          transition={{ delay: 1, duration: 0.4 }}
-        />
-        <text x={bX + 8} y={bY - 8} fontSize={10} className="fill-primary font-medium">
-          b = {b.toFixed(1)}
-        </text>
+        <text x={pad.left + cw / 2} y={height - 2} textAnchor="middle" fontSize={10} className="fill-muted-foreground/60">Proficiência (θ)</text>
+        <text x={10} y={pad.top + ch / 2} textAnchor="middle" fontSize={10} className="fill-muted-foreground/60" transform={`rotate(-90, 10, ${pad.top + ch / 2})`}>P(θ)</text>
+        <motion.path d={curve} fill="none" stroke="var(--color-primary)" strokeWidth={2.5} strokeLinecap="round" initial={{ pathLength: 0 }} animate={{ pathLength: 1 }} transition={{ duration: 1.5, ease: [0.32, 0.72, 0, 1] }} />
+        <motion.circle cx={bX} cy={bY} r={5} fill="var(--color-primary)" stroke="var(--color-background)" strokeWidth={2} initial={{ scale: 0 }} animate={{ scale: 1 }} transition={{ delay: 1, duration: 0.4 }} />
+        <text x={bX + 8} y={bY - 8} fontSize={10} className="fill-primary font-medium">b = {b.toFixed(1)}</text>
       </svg>
 
-      {/* Sliders */}
       <div className="mt-4 space-y-3">
-        <Slider label="Discriminacao (a)" value={a} min={0.3} max={3} step={0.1} onChange={setA} />
+        <Slider label="Discriminação (a)" value={a} min={0.3} max={3} step={0.1} onChange={setA} />
         <Slider label="Dificuldade (b)" value={b} min={-3} max={3} step={0.1} onChange={setB} />
         <Slider label="Acerto ao acaso (c)" value={c} min={0} max={0.4} step={0.05} onChange={setC} />
       </div>
@@ -167,33 +71,11 @@ export function ItemCurveHero() {
   );
 }
 
-function Slider({
-  label,
-  value,
-  min,
-  max,
-  step,
-  onChange,
-}: {
-  label: string;
-  value: number;
-  min: number;
-  max: number;
-  step: number;
-  onChange: (v: number) => void;
-}) {
+function Slider({ label, value, min, max, step, onChange }: { label: string; value: number; min: number; max: number; step: number; onChange: (v: number) => void }) {
   return (
     <div className="flex items-center gap-3">
       <label className="text-[11px] text-muted-foreground w-36 shrink-0">{label}</label>
-      <input
-        type="range"
-        min={min}
-        max={max}
-        step={step}
-        value={value}
-        onChange={(e) => onChange(parseFloat(e.target.value))}
-        className="flex-1 h-1 accent-primary cursor-pointer"
-      />
+      <input type="range" min={min} max={max} step={step} value={value} onChange={(e) => onChange(parseFloat(e.target.value))} className="flex-1 h-1 accent-primary cursor-pointer" />
       <span className="text-xs font-mono text-foreground w-10 text-right">{value.toFixed(step < 0.1 ? 2 : 1)}</span>
     </div>
   );

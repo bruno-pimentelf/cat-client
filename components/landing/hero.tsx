@@ -24,7 +24,7 @@ export function Hero() {
                   <span className="relative inline-flex h-2 w-2 rounded-full bg-primary" />
                 </span>
                 <span className="text-[10px] font-semibold uppercase tracking-[0.15em] text-muted-foreground">
-                  Avaliacao Inteligente
+                  Avaliação Inteligente
                 </span>
               </div>
             </FadeIn>
@@ -34,12 +34,12 @@ export function Hero() {
                 className="font-display tracking-[-0.03em] leading-[1.1]"
                 style={{ fontSize: "clamp(2.2rem, 5vw, 3.8rem)" }}
               >
-                Medir proficiencia com{" "}
-                <span className="text-primary">precisao</span>,{" "}
+                Medir proficiência com{" "}
+                <span className="text-primary">precisão</span>,{" "}
                 <br className="hidden sm:block" />
                 usando menos{" "}
                 <span className="font-display italic text-muted-foreground/60">
-                  questoes
+                  questões
                 </span>
               </h1>
             </FadeIn>
@@ -47,8 +47,8 @@ export function Hero() {
             <FadeIn delay={0.2}>
               <p className="mt-5 text-base sm:text-lg text-muted-foreground leading-relaxed max-w-lg">
                 Teste Adaptativo Computadorizado baseado no modelo 3PL da Teoria
-                de Resposta ao Item. Cada questao e selecionada em tempo real
-                para maximizar a informacao sobre o aluno.
+                de Resposta ao Item. Cada questão é selecionada em tempo real
+                para maximizar a informação sobre o aluno.
               </p>
             </FadeIn>
 

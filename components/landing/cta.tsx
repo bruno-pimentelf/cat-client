@@ -10,7 +10,6 @@ export function CTA() {
       <div className="mx-auto max-w-6xl px-4 sm:px-6">
         <FadeIn>
           <div className="relative rounded-3xl border border-foreground/[0.06] bg-foreground/[0.02] overflow-hidden">
-            {/* Glow */}
             <div className="pointer-events-none absolute inset-0">
               <div className="absolute left-1/2 bottom-0 -translate-x-1/2 h-[300px] w-[500px] rounded-full bg-primary/[0.06] blur-[100px]" />
             </div>
@@ -21,15 +20,15 @@ export function CTA() {
                 style={{ fontSize: "clamp(1.5rem, 3.5vw, 2.5rem)" }}
               >
                 Pronto para medir{" "}
-                <span className="text-primary">proficiencia</span>?
+                <span className="text-primary">proficiência</span>?
               </h2>
               <p className="mt-4 text-muted-foreground max-w-md mx-auto leading-relaxed">
                 Inicie um teste adaptativo agora. Selecione a disciplina,
-                a serie, e acompanhe a estimativa em tempo real.
+                a série, e acompanhe a estimativa em tempo real.
               </p>
               <div className="mt-8">
                 <Button asChild size="lg" className="rounded-xl h-12 px-8 text-sm font-medium">
-                  <Link href="/teste">Comecar Agora</Link>
+                  <Link href="/teste">Começar Agora</Link>
                 </Button>
               </div>
             </div>

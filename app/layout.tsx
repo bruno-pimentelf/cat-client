@@ -23,7 +23,7 @@ const dmSerif = DM_Serif_Display({
 
 export const metadata: Metadata = {
   title: "CAT - Teste Adaptativo",
-  description: "Avaliacao adaptativa baseada na Teoria de Resposta ao Item",
+  description: "Avaliação adaptativa baseada na Teoria de Resposta ao Item",
 }
 
 export default function RootLayout({

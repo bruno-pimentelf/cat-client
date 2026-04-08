@@ -1,11 +1,11 @@
 "use client";
 
 import { FadeIn } from "./motion";
+import { Latex } from "./latex";
 
 export function TriSection() {
   return (
     <section className="relative py-20 sm:py-32 overflow-hidden">
-      {/* Background glow */}
       <div className="pointer-events-none absolute right-0 top-1/2 -translate-y-1/2 h-[500px] w-[500px] rounded-full bg-primary/[0.03] blur-[120px]" />
 
       <div className="relative mx-auto max-w-6xl px-4 sm:px-6">
@@ -15,7 +15,7 @@ export function TriSection() {
             <FadeIn>
               <div className="inline-flex items-center gap-2 rounded-full border border-foreground/[0.06] bg-foreground/[0.03] px-3.5 py-1.5 mb-5">
                 <span className="text-[10px] font-semibold uppercase tracking-[0.15em] text-muted-foreground">
-                  Fundamentacao
+                  Fundamentação
                 </span>
               </div>
             </FadeIn>
@@ -25,19 +25,18 @@ export function TriSection() {
                 className="font-display tracking-[-0.03em]"
                 style={{ fontSize: "clamp(1.6rem, 4vw, 2.8rem)" }}
               >
-                Modelo <span className="text-primary">3PL</span> da Teoria de Resposta ao Item
+                Modelo{" "}
+                <span className="text-primary">3PL</span> da Teoria de
+                Resposta ao Item
               </h2>
             </FadeIn>
 
             <FadeIn delay={0.2}>
               <div className="mt-6 space-y-4 text-[15px] text-muted-foreground leading-relaxed">
                 <p>
-                  A TRI modela a probabilidade de acerto como funcao da
-                  proficiencia do aluno e das caracteristicas do item,
+                  A TRI modela a probabilidade de acerto como função da
+                  proficiência do aluno e das características do item,
                   independente da amostra de alunos ou itens utilizados.
-                </p>
-                <p>
-                  O modelo logistico de 3 parametros (3PL) considera:
                 </p>
               </div>
             </FadeIn>
@@ -47,29 +46,32 @@ export function TriSection() {
                 {[
                   {
                     param: "a",
-                    name: "Discriminacao",
-                    desc: "Capacidade do item de diferenciar alunos com proficiencias proximas",
-                    color: "bg-primary",
+                    name: "Discriminação",
+                    desc: "Capacidade do item de diferenciar alunos com proficiências próximas",
+                    color: "text-primary",
+                    bg: "bg-primary/10",
                   },
                   {
                     param: "b",
                     name: "Dificuldade",
-                    desc: "Nivel de proficiencia necessario para 50% de chance de acerto (acima de c)",
-                    color: "bg-chart-2",
+                    desc: "Nível de proficiência necessário para 50% de chance de acerto (acima de c)",
+                    color: "text-chart-2",
+                    bg: "bg-chart-2/10",
                   },
                   {
                     param: "c",
                     name: "Acerto ao acaso",
-                    desc: "Probabilidade de acerto por chute, mesmo com proficiencia muito baixa",
-                    color: "bg-destructive",
+                    desc: "Probabilidade de acerto por chute, mesmo com proficiência muito baixa",
+                    color: "text-destructive",
+                    bg: "bg-destructive/10",
                   },
                 ].map((item) => (
                   <div
                     key={item.param}
                     className="flex items-start gap-3 rounded-xl border border-foreground/[0.06] bg-foreground/[0.02] p-4"
                   >
-                    <div className={`mt-0.5 h-8 w-8 shrink-0 rounded-lg ${item.color}/10 flex items-center justify-center`}>
-                      <span className={`text-sm font-mono font-bold ${item.color === "bg-primary" ? "text-primary" : item.color === "bg-chart-2" ? "text-chart-2" : "text-destructive"}`}>
+                    <div className={`mt-0.5 h-8 w-8 shrink-0 rounded-lg ${item.bg} flex items-center justify-center`}>
+                      <span className={`text-sm font-mono font-bold ${item.color}`}>
                         {item.param}
                       </span>
                     </div>
@@ -83,57 +85,52 @@ export function TriSection() {
             </FadeIn>
           </div>
 
-          {/* Formula visual */}
+          {/* Fórmulas */}
           <FadeIn direction="right" delay={0.2}>
-            <div className="rounded-2xl border border-foreground/[0.06] bg-foreground/[0.02] p-6 sm:p-8 backdrop-blur-sm">
-              <p className="text-[11px] font-semibold uppercase tracking-[0.12em] text-muted-foreground mb-6">
-                Funcao de Resposta ao Item
-              </p>
-
-              {/* Formula */}
-              <div className="rounded-xl bg-foreground/[0.03] p-5 text-center mb-8">
-                <p className="text-lg sm:text-xl font-mono tracking-tight">
-                  P(θ) = <span className="text-destructive">c</span> +{" "}
-                  <span className="text-muted-foreground">(1 - <span className="text-destructive">c</span>)</span> /{" "}
-                  <span className="text-muted-foreground">(1 + e</span>
-                  <sup className="text-xs">
-                    -D<span className="text-primary">a</span>(θ - <span className="text-chart-2">b</span>)
-                  </sup>
-                  <span className="text-muted-foreground">)</span>
+            <div className="rounded-2xl border border-foreground/[0.06] bg-foreground/[0.02] p-6 sm:p-8 backdrop-blur-sm space-y-8">
+              <div>
+                <p className="text-[11px] font-semibold uppercase tracking-[0.12em] text-muted-foreground mb-4">
+                  Função de Resposta ao Item
                 </p>
-                <p className="text-[11px] text-muted-foreground mt-3">
-                  D = 1.7 (constante de escala)
-                </p>
-              </div>
-
-              {/* Info visual */}
-              <div className="space-y-4">
-                <p className="text-[11px] font-semibold uppercase tracking-[0.12em] text-muted-foreground">
-                  Informacao de Fisher
-                </p>
-                <div className="rounded-xl bg-foreground/[0.03] p-5 text-center">
-                  <p className="text-base font-mono tracking-tight">
-                    I(θ) = D<sup>2</sup><span className="text-primary">a</span><sup>2</sup>{" "}
-                    <span className="text-muted-foreground">·</span>{" "}
-                    Q/P{" "}
-                    <span className="text-muted-foreground">·</span>{" "}
-                    (P - <span className="text-destructive">c</span>)<sup>2</sup> / (1 - <span className="text-destructive">c</span>)<sup>2</sup>
-                  </p>
-                  <p className="text-[11px] text-muted-foreground mt-3">
-                    Maximo proximo de θ = b, usado para selecao adaptativa
-                  </p>
+                <div className="rounded-xl bg-foreground/[0.03] p-5 flex justify-center overflow-x-auto">
+                  <Latex
+                    math="P(\theta) = \textcolor{#ef4444}{c} + \frac{1 - \textcolor{#ef4444}{c}}{1 + e^{-D \textcolor{#6366f1}{a}(\theta - \textcolor{#3b82f6}{b})}}"
+                    display
+                  />
                 </div>
+                <p className="text-[11px] text-muted-foreground mt-3 text-center">
+                  <Latex math="D = 1{,}7" /> (constante de escala logística)
+                </p>
               </div>
 
-              {/* EAP */}
-              <div className="mt-6 space-y-2">
-                <p className="text-[11px] font-semibold uppercase tracking-[0.12em] text-muted-foreground">
-                  Estimacao EAP
+              <div>
+                <p className="text-[11px] font-semibold uppercase tracking-[0.12em] text-muted-foreground mb-4">
+                  Informação de Fisher
                 </p>
-                <p className="text-[12px] text-muted-foreground leading-relaxed">
-                  Esperanca a posteriori com quadratura normal de 100 pontos.
-                  A distribuicao posterior e proporcional a verossimilhanca multiplicada
-                  pela priori (normal padrao), integrada numericamente.
+                <div className="rounded-xl bg-foreground/[0.03] p-5 flex justify-center overflow-x-auto">
+                  <Latex
+                    math="I(\theta) = D^2 \textcolor{#6366f1}{a}^2 \cdot \frac{Q}{P} \cdot \frac{(P - \textcolor{#ef4444}{c})^2}{(1 - \textcolor{#ef4444}{c})^2}"
+                    display
+                  />
+                </div>
+                <p className="text-[11px] text-muted-foreground mt-3 text-center">
+                  Máxima próxima de <Latex math="\theta = b" />, usada na seleção adaptativa
+                </p>
+              </div>
+
+              <div>
+                <p className="text-[11px] font-semibold uppercase tracking-[0.12em] text-muted-foreground mb-4">
+                  Estimação EAP
+                </p>
+                <div className="rounded-xl bg-foreground/[0.03] p-5 flex justify-center overflow-x-auto">
+                  <Latex
+                    math="\hat{\theta}_{EAP} = \frac{\sum_{k=1}^{Q} \theta_k \cdot L(\theta_k) \cdot w_k}{\sum_{k=1}^{Q} L(\theta_k) \cdot w_k}"
+                    display
+                  />
+                </div>
+                <p className="text-[11px] text-muted-foreground mt-3 text-center">
+                  Quadratura normal com <Latex math="Q = 100" /> pontos em{" "}
+                  <Latex math="[-4,\; 4]" />
                 </p>
               </div>
             </div>

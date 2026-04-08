@@ -8,10 +8,10 @@ export function Metrics() {
       <div className="mx-auto max-w-6xl px-4 sm:px-6">
         <Stagger className="grid grid-cols-2 gap-4 md:grid-cols-4 md:gap-6" staggerDelay={0.1}>
           {[
-            { value: 2353, suffix: "", label: "Itens calibrados", sub: "no banco de questoes" },
+            { value: 2353, suffix: "", label: "Itens calibrados", sub: "no banco de questões" },
             { value: 8, suffix: "", label: "Disciplinas", sub: "do ensino fundamental" },
-            { value: 20, suffix: "", label: "Questoes max", sub: "por avaliacao" },
-            { value: 100, suffix: "", label: "Pontos de quadratura", sub: "na estimacao EAP" },
+            { value: 20, suffix: "", label: "Questões máx.", sub: "por avaliação" },
+            { value: 100, suffix: "", label: "Pontos de quadratura", sub: "na estimação EAP" },
           ].map((m) => (
             <StaggerItem key={m.label}>
               <div className="rounded-2xl border border-foreground/[0.06] bg-foreground/[0.02] p-5 sm:p-6 text-center">

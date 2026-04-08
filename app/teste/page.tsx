@@ -55,7 +55,7 @@ function TesteContent() {
     }
   }, [hasFilters]); // eslint-disable-line react-hooks/exhaustive-deps
 
-  // Se nao tem filtros, mostrar tela de selecao
+  // Se não tem filtros, mostrar tela de seleção
   if (!hasFilters && !session) {
     return <SelectionScreen />;
   }
@@ -95,7 +95,7 @@ function TesteContent() {
     <div className="min-h-svh">
       {/* Mobile: stacked / Desktop: split */}
       <div className="lg:flex lg:h-svh">
-        {/* Painel esquerdo - stats e grafico (sticky no desktop) */}
+        {/* Painel esquerdo - stats e gráfico (sticky no desktop) */}
         <aside className="border-b border-border/60 bg-muted/20 px-4 py-5 lg:w-[400px] xl:w-[440px] lg:border-b-0 lg:border-r lg:overflow-y-auto lg:shrink-0 lg:py-8 lg:px-6">
           <div className="mx-auto max-w-2xl lg:max-w-none space-y-5">
             {/* Contexto */}
@@ -117,8 +117,8 @@ function TesteContent() {
 
             {/* Stats grid */}
             <div className="grid grid-cols-2 gap-2.5">
-              <StatMini label="Proficiencia" value={`${session.theta >= 0 ? "+" : ""}${session.theta.toFixed(2)}`} />
-              <StatMini label="Erro Padrao" value={session.se != null ? session.se.toFixed(3) : "—"} />
+              <StatMini label="Proficiência" value={`${session.theta >= 0 ? "+" : ""}${session.theta.toFixed(2)}`} />
+              <StatMini label="Erro Padrão" value={session.se != null ? session.se.toFixed(3) : "—"} />
               <StatMini label="Acertos" value={`${correctCount}`} />
               <StatMini label="Respondidas" value={`${session.step - 1}`} />
             </div>
@@ -127,7 +127,7 @@ function TesteContent() {
             {history.length > 0 && (
               <div className="space-y-2">
                 <div className="flex items-center justify-between">
-                  <h2 className="text-xs font-semibold">Evolucao</h2>
+                  <h2 className="text-xs font-semibold">Evolução</h2>
                   <div className="flex items-center gap-2.5 text-[10px] text-muted-foreground">
                     <span className="flex items-center gap-1">
                       <span className="inline-block h-1.5 w-1.5 rounded-full bg-emerald-500" />
@@ -145,7 +145,7 @@ function TesteContent() {
               </div>
             )}
 
-            {/* Historico compacto */}
+            {/* Histórico compacto */}
             {history.length > 0 && (
               <div className="flex flex-wrap gap-1">
                 {history.map((h, i) => (
@@ -156,7 +156,7 @@ function TesteContent() {
                         ? "bg-emerald-100 text-emerald-700 dark:bg-emerald-900/40 dark:text-emerald-300"
                         : "bg-red-100 text-red-700 dark:bg-red-900/40 dark:text-red-300"
                     }`}
-                    title={`Questao ${h.step}: θ=${h.theta.toFixed(2)}`}
+                    title={`Questão ${h.step}: θ=${h.theta.toFixed(2)}`}
                   >
                     {h.step}
                   </div>
@@ -166,7 +166,7 @@ function TesteContent() {
           </div>
         </aside>
 
-        {/* Painel direito - questao (scrollavel) */}
+        {/* Painel direito - questão (rolável) */}
         <main className="flex-1 overflow-y-auto px-4 py-5 lg:py-8 lg:px-8 xl:px-12">
           <div className="mx-auto max-w-2xl lg:max-w-xl">
             {session.item && (
@@ -208,8 +208,8 @@ function CompletedView({
               <path strokeLinecap="round" strokeLinejoin="round" d="M9 12.75 11.25 15 15 9.75M21 12a9 9 0 1 1-18 0 9 9 0 0 1 18 0Z" />
             </svg>
           </div>
-          <h1 className="text-xl font-bold tracking-tight">Teste Concluido</h1>
-          <p className="text-sm text-muted-foreground">{session.step} questoes respondidas</p>
+          <h1 className="text-xl font-bold tracking-tight">Teste Concluído</h1>
+          <p className="text-sm text-muted-foreground">{session.step} questões respondidas</p>
         </div>
 
         {/* Feedback ultima resposta */}
@@ -217,8 +217,8 @@ function CompletedView({
 
         {/* Stats */}
         <div className="grid grid-cols-2 md:grid-cols-4 gap-3">
-          <StatCard label="Proficiencia" value={`θ ${session.theta >= 0 ? "+" : ""}${session.theta.toFixed(2)}`} />
-          <StatCard label="Erro Padrao" value={session.se != null ? session.se.toFixed(3) : "—"} />
+          <StatCard label="Proficiência" value={`θ ${session.theta >= 0 ? "+" : ""}${session.theta.toFixed(2)}`} />
+          <StatCard label="Erro Padrão" value={session.se != null ? session.se.toFixed(3) : "—"} />
           <StatCard label="Acertos" value={`${correctCount} / ${session.step}`} />
           <StatCard label="Taxa" value={`${session.step > 0 ? Math.round((correctCount / session.step) * 100) : 0}%`} />
         </div>
@@ -226,7 +226,7 @@ function CompletedView({
         {/* Grafico */}
         <div className="space-y-3">
           <div className="flex items-center justify-between">
-            <h2 className="text-sm font-semibold">Evolucao</h2>
+            <h2 className="text-sm font-semibold">Evolução</h2>
             <div className="flex items-center gap-3 text-[11px] text-muted-foreground">
               <span className="flex items-center gap-1.5">
                 <span className="inline-block h-2 w-2 rounded-full bg-emerald-500" />
@@ -245,7 +245,7 @@ function CompletedView({
 
         <Separator />
 
-        {/* Historico */}
+        {/* Histórico */}
         {history.length > 0 && (
           <div className="space-y-2">
             <h2 className="text-sm font-semibold">Respostas</h2>
@@ -258,7 +258,7 @@ function CompletedView({
                       ? "bg-emerald-100 text-emerald-700 dark:bg-emerald-900/40 dark:text-emerald-300"
                       : "bg-red-100 text-red-700 dark:bg-red-900/40 dark:text-red-300"
                   }`}
-                  title={`Questao ${h.step}: θ=${h.theta.toFixed(2)}`}
+                  title={`Questão ${h.step}: θ=${h.theta.toFixed(2)}`}
                 >
                   {h.step}
                 </div>
@@ -325,7 +325,7 @@ function SelectionScreen() {
         <div className="text-center space-y-3">
           <h1 className="text-2xl font-bold tracking-tight">Iniciar Teste</h1>
           <p className="text-sm text-muted-foreground leading-relaxed max-w-sm mx-auto">
-            Selecione a disciplina e a serie para comecar.
+            Selecione a disciplina e a série para começar.
           </p>
         </div>
 
@@ -364,7 +364,7 @@ function SelectionScreen() {
             {selectedDisciplina && (
               <div className="space-y-3 animate-in fade-in slide-in-from-top-2 duration-200">
                 <label className="text-xs font-medium uppercase tracking-wider text-muted-foreground">
-                  Serie / Ano
+                  Série / Ano
                 </label>
                 <div className="flex flex-wrap gap-2">
                   {sortedAnos.map((ano) => (

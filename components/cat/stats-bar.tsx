@@ -18,19 +18,19 @@ export function StatsBar({
   return (
     <div className="grid grid-cols-2 md:grid-cols-4 gap-3">
       <StatCard
-        label="Proficiencia"
+        label="Proficiência"
         value={`θ ${theta >= 0 ? "+" : ""}${theta.toFixed(2)}`}
         sublabel="Escala SAEB"
       />
       <StatCard
-        label="Erro Padrao"
+        label="Erro Padrão"
         value={se != null ? se.toFixed(3) : "—"}
-        sublabel={se != null && se < 0.3 ? "Precisao alta" : "Estimando..."}
+        sublabel={se != null && se < 0.3 ? "Precisão alta" : "Estimando..."}
       />
       <StatCard
-        label="Questao"
+        label="Questão"
         value={`${step} / ${totalSteps}`}
-        sublabel={`${Math.round(((step - 1) / totalSteps) * 100)}% concluido`}
+        sublabel={`${Math.round(((step - 1) / totalSteps) * 100)}% concluído`}
       />
       {correctCount !== undefined && (
         <StatCard

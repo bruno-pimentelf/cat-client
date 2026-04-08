@@ -3,6 +3,7 @@ import { Hero } from "@/components/landing/hero";
 import { Metrics } from "@/components/landing/metrics";
 import { HowItWorks } from "@/components/landing/how-it-works";
 import { TriSection } from "@/components/landing/tri-section";
+import { DemoSection } from "@/components/landing/demo-section";
 import { CTA } from "@/components/landing/cta";
 import { Footer } from "@/components/landing/footer";
 
@@ -14,6 +15,7 @@ export default function LandingPage() {
         <Hero />
         <Metrics />
         <HowItWorks />
+        <DemoSection />
         <div id="metodologia">
           <TriSection />
         </div>

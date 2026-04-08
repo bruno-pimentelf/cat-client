@@ -66,7 +66,7 @@ export function QuestionCard({
             variant="secondary"
             className="text-[11px] font-medium px-2 py-0.5"
           >
-            Questao {step}/{totalSteps}
+            Questão {step}/{totalSteps}
           </Badge>
           <span className="text-[11px] text-muted-foreground font-mono">
             {item.codigo}
