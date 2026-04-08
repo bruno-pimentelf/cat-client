@@ -5,7 +5,7 @@ import { useRouter, useSearchParams } from "next/navigation";
 import { useQuery } from "@tanstack/react-query";
 import { catApi } from "@/lib/api";
 import { useCat } from "@/hooks/use-cat";
-import { QuestionCard, FeedbackBanner } from "@/components/cat/question-card";
+import { QuestionCard } from "@/components/cat/question-card";
 import { ThetaChart } from "@/components/cat/theta-chart";
 import { Progress } from "@/components/ui/progress";
 import { Button } from "@/components/ui/button";
@@ -35,11 +35,13 @@ function TesteContent() {
   const {
     session,
     history,
+    pendingFeedback,
     isStarting,
     isAnswering,
     error,
     startSession,
     submitAnswer,
+    advanceToNext,
   } = useCat();
 
   const hasFilters = !!(disciplina && anoEscolar);
@@ -174,9 +176,10 @@ function TesteContent() {
                 item={session.item}
                 step={session.step}
                 totalSteps={session.totalSteps}
-                previousAnswer={session.previousAnswer}
                 onSubmit={submitAnswer}
                 loading={isAnswering}
+                feedback={pendingFeedback}
+                onFeedbackDone={advanceToNext}
               />
             )}
             {error && <p className="text-sm text-destructive text-center mt-4">{error}</p>}
@@ -211,9 +214,6 @@ function CompletedView({
           <h1 className="text-xl font-bold tracking-tight">Teste Concluído</h1>
           <p className="text-sm text-muted-foreground">{session.step} questões respondidas</p>
         </div>
-
-        {/* Feedback ultima resposta */}
-        {session.previousAnswer && <FeedbackBanner answer={session.previousAnswer} />}
 
         {/* Stats */}
         <div className="grid grid-cols-2 md:grid-cols-4 gap-3">

@@ -127,4 +127,18 @@
   html {
     @apply font-sans;
     }
+  button,
+  a,
+  [role="button"],
+  input[type="range"],
+  input[type="radio"],
+  input[type="checkbox"],
+  select,
+  label[for] {
+    cursor: pointer;
+  }
+  button:disabled,
+  a[aria-disabled="true"] {
+    cursor: not-allowed;
+  }
 }

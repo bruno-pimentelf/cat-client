@@ -104,10 +104,10 @@ export function ThetaChart({
           content={
             <ChartTooltipContent
               formatter={(value, name) => {
-                if (name === "theta") return [`θ = ${value}`, "Proficiencia"];
-                if (name === "se") return [`SE = ${value}`, "Erro Padrao"];
-                return [String(value), String(name)];
+                if (name === "theta") return [`θ = ${value}`, "Proficiência"];
+                return null;
               }}
+              hideIndicator
             />
           }
         />
@@ -121,6 +121,7 @@ export function ThetaChart({
             dot={false}
             activeDot={false}
             isAnimationActive={false}
+            tooltipType="none"
           />
         )}
         {showSE && (
@@ -133,6 +134,7 @@ export function ThetaChart({
             dot={false}
             activeDot={false}
             isAnimationActive={false}
+            tooltipType="none"
           />
         )}
         <Area

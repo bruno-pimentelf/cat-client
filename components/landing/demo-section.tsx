@@ -321,9 +321,9 @@ export function DemoSection() {
                             <XAxis dataKey="step" tickLine={false} axisLine={false} fontSize={10} className="fill-muted-foreground" />
                             <YAxis domain={[-2, 2]} tickLine={false} axisLine={false} fontSize={10} className="fill-muted-foreground" ticks={[-2, -1, 0, 1, 2]} />
                             <ReferenceLine y={0} strokeDasharray="3 3" className="stroke-border" />
-                            <ChartTooltip content={<ChartTooltipContent />} />
-                            <Area dataKey="upper" stroke="none" fill="var(--color-chart-1)" fillOpacity={0.06} type="monotone" dot={false} activeDot={false} />
-                            <Area dataKey="lower" stroke="none" fill="var(--color-background)" fillOpacity={1} type="monotone" dot={false} activeDot={false} />
+                            <ChartTooltip content={<ChartTooltipContent formatter={(value, name) => { if (name === "theta") return [`θ = ${value}`, "Proficiência"]; return null; }} hideIndicator />} />
+                            <Area dataKey="upper" stroke="none" fill="var(--color-chart-1)" fillOpacity={0.06} type="monotone" dot={false} activeDot={false} tooltipType="none" />
+                            <Area dataKey="lower" stroke="none" fill="var(--color-background)" fillOpacity={1} type="monotone" dot={false} activeDot={false} tooltipType="none" />
                             <Area dataKey="theta" stroke="var(--color-chart-1)" strokeWidth={2} fill="url(#dg)" type="monotone"
                               dot={(props: any) => {
                                 const { cx, cy, index } = props;
