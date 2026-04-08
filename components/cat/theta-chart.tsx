@@ -14,16 +14,13 @@ import {
   ChartTooltip,
   ChartTooltipContent,
 } from "@/components/ui/chart";
+import { thetaToSaeb } from "@/lib/saeb";
 import type { HistoryStep } from "@/lib/types";
 
 const chartConfig = {
-  theta: {
-    label: "Proficiencia (θ)",
+  saeb: {
+    label: "Proficiência SAEB",
     color: "var(--color-chart-1)",
-  },
-  se: {
-    label: "Erro Padrao",
-    color: "var(--color-chart-3)",
   },
 } satisfies ChartConfig;
 
@@ -42,10 +39,9 @@ export function ThetaChart({
 
   const data = history.map((h) => ({
     step: h.step,
-    theta: Number(h.theta.toFixed(3)),
-    se: h.se != null ? Number(h.se.toFixed(3)) : null,
-    upper: h.se != null ? Number((h.theta + h.se).toFixed(3)) : null,
-    lower: h.se != null ? Number((h.theta - h.se).toFixed(3)) : null,
+    saeb: Math.round(thetaToSaeb(h.theta)),
+    upper: h.se != null ? Math.round(thetaToSaeb(h.theta + h.se)) : null,
+    lower: h.se != null ? Math.round(thetaToSaeb(h.theta - h.se)) : null,
     correct: h.correct,
   }));
 
@@ -53,32 +49,12 @@ export function ThetaChart({
     <ChartContainer config={chartConfig} className="aspect-[2/1] w-full">
       <AreaChart
         data={data}
-        margin={{ top: 8, right: 8, bottom: 0, left: -12 }}
+        margin={{ top: 8, right: 8, bottom: 0, left: -4 }}
       >
         <defs>
           <linearGradient id="thetaGrad" x1="0" y1="0" x2="0" y2="1">
-            <stop
-              offset="0%"
-              stopColor="var(--color-chart-1)"
-              stopOpacity={0.3}
-            />
-            <stop
-              offset="100%"
-              stopColor="var(--color-chart-1)"
-              stopOpacity={0.02}
-            />
-          </linearGradient>
-          <linearGradient id="seGrad" x1="0" y1="0" x2="0" y2="1">
-            <stop
-              offset="0%"
-              stopColor="var(--color-chart-3)"
-              stopOpacity={0.15}
-            />
-            <stop
-              offset="100%"
-              stopColor="var(--color-chart-3)"
-              stopOpacity={0.02}
-            />
+            <stop offset="0%" stopColor="var(--color-chart-1)" stopOpacity={0.3} />
+            <stop offset="100%" stopColor="var(--color-chart-1)" stopOpacity={0.02} />
           </linearGradient>
         </defs>
         <CartesianGrid strokeDasharray="3 3" className="stroke-border" />
@@ -91,20 +67,20 @@ export function ThetaChart({
           className="fill-muted-foreground"
         />
         <YAxis
-          domain={[-3, 3]}
+          domain={[100, 400]}
           tickLine={false}
           axisLine={false}
           fontSize={11}
           tickMargin={4}
           className="fill-muted-foreground"
-          ticks={[-3, -2, -1, 0, 1, 2, 3]}
+          ticks={[100, 150, 200, 250, 300, 350, 400]}
         />
-        <ReferenceLine y={0} strokeDasharray="4 4" className="stroke-border" />
+        <ReferenceLine y={250} strokeDasharray="4 4" className="stroke-border" />
         <ChartTooltip
           content={
             <ChartTooltipContent
               formatter={(value, name) => {
-                if (name === "theta") return [`θ = ${value}`, "Proficiência"];
+                if (name === "saeb") return [`${value} pts`, "Proficiência SAEB"];
                 return null;
               }}
               hideIndicator
@@ -138,7 +114,7 @@ export function ThetaChart({
           />
         )}
         <Area
-          dataKey="theta"
+          dataKey="saeb"
           stroke="var(--color-chart-1)"
           strokeWidth={2}
           fill="url(#thetaGrad)"

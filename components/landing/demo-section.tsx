@@ -19,6 +19,7 @@ import {
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 import { FadeIn } from "./motion";
+import { formatSaeb, thetaToSaeb } from "@/lib/saeb";
 
 const D = 1.7;
 function prob3pl(theta: number, a: number, b: number, c: number) {
@@ -83,7 +84,7 @@ interface Step { step: number; theta: number; se: number; correct: boolean; qIdx
 
 const EASE = [0.32, 0.72, 0, 1] as const;
 const TRUE_THETA = 0.8;
-const chartConfig = { theta: { label: "Proficiência", color: "var(--color-chart-1)" } } satisfies ChartConfig;
+const chartConfig = { saeb: { label: "Proficiência SAEB", color: "var(--color-chart-1)" } } satisfies ChartConfig;
 
 type Phase = "idle" | "question" | "calculating" | "result" | "done";
 
@@ -146,8 +147,8 @@ export function DemoSection() {
   };
 
   const chartData = history.map((h) => ({
-    step: h.step, theta: h.theta,
-    upper: +(h.theta + h.se).toFixed(3), lower: +(h.theta - h.se).toFixed(3),
+    step: h.step, saeb: Math.round(thetaToSaeb(h.theta)),
+    upper: Math.round(thetaToSaeb(h.theta + h.se)), lower: Math.round(thetaToSaeb(h.theta - h.se)),
     correct: h.correct,
   }));
 
@@ -209,8 +210,8 @@ export function DemoSection() {
                   <div className="px-5 pt-5 sm:px-6 sm:pt-6">
                     <div className="flex items-center gap-2 flex-wrap">
                       <StatPill label="Questão" value={`${history.length + (phase === "question" ? 1 : 0)} de 8`} />
-                      <StatPill label="θ estimado" value={theta >= 0 ? `+${theta.toFixed(2)}` : theta.toFixed(2)} highlight />
-                      {se != null && <StatPill label="Erro padrão" value={se.toFixed(3)} />}
+                      <StatPill label="Proficiência" value={`${formatSaeb(theta)} pts`} highlight />
+                      {se != null && <StatPill label="Erro padrão" value={`±${Math.round(50 * se)} pts`} />}
                       <StatPill label="Acertos" value={`${history.filter((h) => h.correct).length}`} />
                       <div className="flex-1" />
                       <div className="flex gap-1">
@@ -290,9 +291,9 @@ export function DemoSection() {
                             className="w-full text-center space-y-3 py-8">
                             <p className="text-[10px] font-semibold uppercase tracking-[0.15em] text-muted-foreground">Estimativa atualizada</p>
                             <motion.p initial={{ scale: 0.8 }} animate={{ scale: 1 }} className="text-3xl font-display">
-                              θ = {theta >= 0 ? "+" : ""}{theta.toFixed(3)}
+                              {formatSaeb(theta)} pontos
                             </motion.p>
-                            <p className="text-[12px] text-muted-foreground">Erro padrão: {se?.toFixed(3)}</p>
+                            <p className="text-[12px] text-muted-foreground">Erro padrão: ±{se != null ? Math.round(50 * se) : "—"} pts</p>
                             <p className="text-[11px] text-muted-foreground/60 animate-pulse">Carregando próxima questão...</p>
                           </motion.div>
                         )}
@@ -319,12 +320,12 @@ export function DemoSection() {
                             </defs>
                             <CartesianGrid strokeDasharray="3 3" className="stroke-border" />
                             <XAxis dataKey="step" tickLine={false} axisLine={false} fontSize={10} className="fill-muted-foreground" />
-                            <YAxis domain={[-2, 2]} tickLine={false} axisLine={false} fontSize={10} className="fill-muted-foreground" ticks={[-2, -1, 0, 1, 2]} />
-                            <ReferenceLine y={0} strokeDasharray="3 3" className="stroke-border" />
-                            <ChartTooltip content={<ChartTooltipContent formatter={(value, name) => { if (name === "theta") return [`θ = ${value}`, "Proficiência"]; return null; }} hideIndicator />} />
+                            <YAxis domain={[100, 400]} tickLine={false} axisLine={false} fontSize={10} className="fill-muted-foreground" ticks={[100, 150, 200, 250, 300, 350, 400]} />
+                            <ReferenceLine y={250} strokeDasharray="4 4" className="stroke-border" />
+                            <ChartTooltip content={<ChartTooltipContent formatter={(value, name) => { if (name === "saeb") return [`${value} pts`, "Proficiência SAEB"]; return null; }} hideIndicator />} />
                             <Area dataKey="upper" stroke="none" fill="var(--color-chart-1)" fillOpacity={0.06} type="monotone" dot={false} activeDot={false} tooltipType="none" />
                             <Area dataKey="lower" stroke="none" fill="var(--color-background)" fillOpacity={1} type="monotone" dot={false} activeDot={false} tooltipType="none" />
-                            <Area dataKey="theta" stroke="var(--color-chart-1)" strokeWidth={2} fill="url(#dg)" type="monotone"
+                            <Area dataKey="saeb" stroke="var(--color-chart-1)" strokeWidth={2} fill="url(#dg)" type="monotone"
                               dot={(props: any) => {
                                 const { cx, cy, index } = props;
                                 if (cx == null || cy == null) return <></>;
@@ -357,7 +358,7 @@ export function DemoSection() {
                             </div>
                           </div>
                           <div className="pt-1 text-[11px] text-muted-foreground">
-                            Informação neste θ: <span className="font-mono font-medium text-foreground">{infoItem(theta, curQ.a, curQ.b, curQ.c).toFixed(2)}</span>
+                            Informação no nível atual: <span className="font-mono font-medium text-foreground">{infoItem(theta, curQ.a, curQ.b, curQ.c).toFixed(2)}</span>
                           </div>
                         </motion.div>
                       )}
@@ -377,12 +378,12 @@ export function DemoSection() {
                     </motion.div>
                     <div>
                       <p className="text-[10px] font-semibold uppercase tracking-[0.15em] text-muted-foreground mb-2">Resultado da simulação</p>
-                      <p className="text-4xl font-display">θ = {theta >= 0 ? "+" : ""}{theta.toFixed(3)}</p>
+                      <p className="text-4xl font-display">{formatSaeb(theta)} pontos</p>
                     </div>
                     <div className="grid grid-cols-2 gap-3">
                       <div className="rounded-xl bg-foreground/[0.03] border border-foreground/[0.06] p-3">
                         <p className="text-[9px] text-muted-foreground uppercase tracking-wider">Erro padrão</p>
-                        <p className="text-sm font-mono font-semibold mt-0.5">{se?.toFixed(3)}</p>
+                        <p className="text-sm font-mono font-semibold mt-0.5">±{se != null ? Math.round(50 * se) : "—"} pts</p>
                       </div>
                       <div className="rounded-xl bg-foreground/[0.03] border border-foreground/[0.06] p-3">
                         <p className="text-[9px] text-muted-foreground uppercase tracking-wider">Acertos</p>
@@ -390,8 +391,8 @@ export function DemoSection() {
                       </div>
                     </div>
                     <p className="text-[12px] text-muted-foreground leading-relaxed">
-                      O algoritmo estimou a proficiência em <strong>{history.length} questões</strong> usando
-                      seleção adaptativa por máxima informação de Fisher.
+                      O algoritmo estimou a proficiência em <strong>{history.length} questões</strong> na
+                      escala SAEB, usando seleção adaptativa por máxima informação de Fisher.
                     </p>
                     <Button onClick={start} variant="outline" className="rounded-xl h-10 px-6 text-sm">
                       Simular novamente

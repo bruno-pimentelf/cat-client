@@ -7,6 +7,7 @@ import { catApi } from "@/lib/api";
 import { useCat } from "@/hooks/use-cat";
 import { QuestionCard } from "@/components/cat/question-card";
 import { ThetaChart } from "@/components/cat/theta-chart";
+import { formatSaeb } from "@/lib/saeb";
 import { Progress } from "@/components/ui/progress";
 import { Button } from "@/components/ui/button";
 import { Separator } from "@/components/ui/separator";
@@ -119,8 +120,8 @@ function TesteContent() {
 
             {/* Stats grid */}
             <div className="grid grid-cols-2 gap-2.5">
-              <StatMini label="Proficiência" value={`${session.theta >= 0 ? "+" : ""}${session.theta.toFixed(2)}`} />
-              <StatMini label="Erro Padrão" value={session.se != null ? session.se.toFixed(3) : "—"} />
+              <StatMini label="Proficiência" value={`${formatSaeb(session.theta)} pts`} />
+              <StatMini label="Erro Padrão" value={session.se != null ? `±${Math.round(50 * session.se)} pts` : "—"} />
               <StatMini label="Acertos" value={`${correctCount}`} />
               <StatMini label="Respondidas" value={`${session.step - 1}`} />
             </div>
@@ -158,7 +159,7 @@ function TesteContent() {
                         ? "bg-emerald-100 text-emerald-700 dark:bg-emerald-900/40 dark:text-emerald-300"
                         : "bg-red-100 text-red-700 dark:bg-red-900/40 dark:text-red-300"
                     }`}
-                    title={`Questão ${h.step}: θ=${h.theta.toFixed(2)}`}
+                    title={`Questão ${h.step}: ${formatSaeb(h.theta)} pts`}
                   >
                     {h.step}
                   </div>
@@ -217,8 +218,8 @@ function CompletedView({
 
         {/* Stats */}
         <div className="grid grid-cols-2 md:grid-cols-4 gap-3">
-          <StatCard label="Proficiência" value={`θ ${session.theta >= 0 ? "+" : ""}${session.theta.toFixed(2)}`} />
-          <StatCard label="Erro Padrão" value={session.se != null ? session.se.toFixed(3) : "—"} />
+          <StatCard label="Proficiência" value={`${formatSaeb(session.theta)} pts`} />
+          <StatCard label="Erro Padrão" value={session.se != null ? `±${Math.round(50 * session.se)} pts` : "—"} />
           <StatCard label="Acertos" value={`${correctCount} / ${session.step}`} />
           <StatCard label="Taxa" value={`${session.step > 0 ? Math.round((correctCount / session.step) * 100) : 0}%`} />
         </div>
@@ -258,7 +259,7 @@ function CompletedView({
                       ? "bg-emerald-100 text-emerald-700 dark:bg-emerald-900/40 dark:text-emerald-300"
                       : "bg-red-100 text-red-700 dark:bg-red-900/40 dark:text-red-300"
                   }`}
-                  title={`Questão ${h.step}: θ=${h.theta.toFixed(2)}`}
+                  title={`Questão ${h.step}: ${formatSaeb(h.theta)} pts`}
                 >
                   {h.step}
                 </div>

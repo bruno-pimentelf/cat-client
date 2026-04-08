@@ -1,5 +1,7 @@
 "use client";
 
+import { formatSaeb, thetaToSaeb } from "@/lib/saeb";
+
 interface StatsBarProps {
   theta: number;
   se: number | null;
@@ -15,17 +17,20 @@ export function StatsBar({
   totalSteps,
   correctCount,
 }: StatsBarProps) {
+  // SE na escala SAEB = 50 × SE_theta
+  const seSaeb = se != null ? Math.round(50 * se) : null;
+
   return (
     <div className="grid grid-cols-2 md:grid-cols-4 gap-3">
       <StatCard
         label="Proficiência"
-        value={`θ ${theta >= 0 ? "+" : ""}${theta.toFixed(2)}`}
+        value={`${formatSaeb(theta)} pts`}
         sublabel="Escala SAEB"
       />
       <StatCard
         label="Erro Padrão"
-        value={se != null ? se.toFixed(3) : "—"}
-        sublabel={se != null && se < 0.3 ? "Precisão alta" : "Estimando..."}
+        value={seSaeb != null ? `±${seSaeb} pts` : "—"}
+        sublabel={seSaeb != null && seSaeb < 15 ? "Precisão alta" : "Estimando..."}
       />
       <StatCard
         label="Questão"
