@@ -1,17 +1,24 @@
-import { Geist, Geist_Mono, Nunito_Sans, Merriweather } from "next/font/google"
+import { Geist_Mono, Inter } from "next/font/google"
+import type { Metadata } from "next"
 
 import "./globals.css"
-import { ThemeProvider } from "@/components/theme-provider"
+import { Providers } from "@/components/providers"
 import { cn } from "@/lib/utils";
 
-const merriweatherHeading = Merriweather({subsets:['latin'],variable:'--font-heading'});
+const inter = Inter({
+  subsets: ['latin'],
+  variable: '--font-sans',
+})
 
-const nunitoSans = Nunito_Sans({subsets:['latin'],variable:'--font-sans'})
-
-const fontMono = Geist_Mono({
+const geistMono = Geist_Mono({
   subsets: ["latin"],
   variable: "--font-mono",
 })
+
+export const metadata: Metadata = {
+  title: "CAT - Teste Adaptativo",
+  description: "Avaliacao adaptativa baseada na Teoria de Resposta ao Item",
+}
 
 export default function RootLayout({
   children,
@@ -20,12 +27,12 @@ export default function RootLayout({
 }>) {
   return (
     <html
-      lang="en"
+      lang="pt-BR"
       suppressHydrationWarning
-      className={cn("antialiased", fontMono.variable, "font-sans", nunitoSans.variable, merriweatherHeading.variable)}
+      className={cn("antialiased", inter.variable, geistMono.variable)}
     >
-      <body>
-        <ThemeProvider>{children}</ThemeProvider>
+      <body className="font-sans" suppressHydrationWarning>
+        <Providers>{children}</Providers>
       </body>
     </html>
   )
