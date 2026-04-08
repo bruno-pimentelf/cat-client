@@ -1,4 +1,4 @@
-import { Geist_Mono, Inter } from "next/font/google"
+import { Geist_Mono, Inter, DM_Serif_Display } from "next/font/google"
 import type { Metadata } from "next"
 
 import "./globals.css"
@@ -15,6 +15,12 @@ const geistMono = Geist_Mono({
   variable: "--font-mono",
 })
 
+const dmSerif = DM_Serif_Display({
+  weight: "400",
+  subsets: ["latin"],
+  variable: "--font-display",
+})
+
 export const metadata: Metadata = {
   title: "CAT - Teste Adaptativo",
   description: "Avaliacao adaptativa baseada na Teoria de Resposta ao Item",
@@ -29,7 +35,7 @@ export default function RootLayout({
     <html
       lang="pt-BR"
       suppressHydrationWarning
-      className={cn("antialiased", inter.variable, geistMono.variable)}
+      className={cn("antialiased", inter.variable, geistMono.variable, dmSerif.variable)}
     >
       <body className="font-sans" suppressHydrationWarning>
         <Providers>{children}</Providers>
