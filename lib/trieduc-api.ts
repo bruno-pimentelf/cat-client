@@ -7,6 +7,10 @@ const AUTH_API_URL =
 export interface Turma {
   Id: string;
   Nome: string;
+  EscolaId?: string;
+  ModalidadeId?: string;
+  SerieId?: string;
+  PeriodoId?: string;
 }
 
 async function smartRequest<T>(path: string): Promise<T | null> {

@@ -309,8 +309,12 @@ function SelectionScreen() {
   const { data: turmas } = useStudentTurmas();
 
   const { anoDetectado, turmaNome } = useMemo(() => {
-    if (!turmas?.length || !filters?.length) {
+    if (!turmas?.length) {
       return { anoDetectado: null as string | null, turmaNome: null as string | null };
+    }
+    const firstTurma = turmas[0]?.Nome ?? null;
+    if (!filters?.length) {
+      return { anoDetectado: null, turmaNome: firstTurma };
     }
     const anosDisponiveis = Array.from(
       new Set(filters.flatMap((f) => f.anos))
@@ -321,7 +325,7 @@ function SelectionScreen() {
       const match = matchAnoInFilters(parsed, anosDisponiveis);
       if (match) return { anoDetectado: match, turmaNome: turma.Nome };
     }
-    return { anoDetectado: null, turmaNome: turmas[0]?.Nome ?? null };
+    return { anoDetectado: null, turmaNome: firstTurma };
   }, [turmas, filters]);
 
   useEffect(() => {
@@ -371,17 +375,19 @@ function SelectionScreen() {
           </div>
         ) : (
           <>
-            {anoDetectado && (
-              <div className="flex items-center justify-center gap-2 rounded-xl border border-border/60 bg-muted/30 px-3 py-2.5 animate-in fade-in slide-in-from-top-1 duration-200">
+            {(anoDetectado || turmaNome) && (
+              <div className="flex flex-wrap items-center justify-center gap-2 rounded-xl border border-border/60 bg-muted/30 px-3 py-2.5 animate-in fade-in slide-in-from-top-1 duration-200">
                 <span className="text-[10px] font-medium uppercase tracking-wider text-muted-foreground">
-                  Sua série
+                  {anoDetectado ? "Sua série" : "Sua turma"}
                 </span>
-                <Badge variant="secondary" className="text-[11px] px-2 py-0.5">
-                  {anoDetectado}
-                </Badge>
+                {anoDetectado && (
+                  <Badge variant="secondary" className="text-[11px] px-2 py-0.5">
+                    {anoDetectado}
+                  </Badge>
+                )}
                 {turmaNome && (
                   <span className="text-[11px] text-muted-foreground">
-                    · {turmaNome}
+                    {anoDetectado ? "· " : ""}{turmaNome}
                   </span>
                 )}
               </div>

@@ -8,7 +8,13 @@ export function useStudentTurmas() {
   const { user, token, isHydrated } = useAuth();
   return useQuery({
     queryKey: ["student-turmas", user?.id],
-    queryFn: () => trieducApi.getTurmas(user!.id),
+    queryFn: async () => {
+      const turmas = await trieducApi.getTurmas(user!.id);
+      if (turmas.length > 0) {
+        console.debug("[trieduc] turmas do aluno:", turmas);
+      }
+      return turmas;
+    },
     enabled: isHydrated && !!user?.id && !!token,
     staleTime: 5 * 60 * 1000,
     retry: 0,
