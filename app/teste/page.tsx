@@ -1,10 +1,12 @@
 "use client";
 
-import { Suspense, useEffect, useState } from "react";
+import { Suspense, useEffect, useMemo, useState } from "react";
 import { useRouter, useSearchParams } from "next/navigation";
 import { useQuery } from "@tanstack/react-query";
 import { catApi } from "@/lib/api";
 import { useCat } from "@/hooks/use-cat";
+import { useStudentTurmas } from "@/hooks/use-student-turma";
+import { matchAnoInFilters, parseAno } from "@/lib/ano-escolar";
 import { QuestionCard } from "@/components/cat/question-card";
 import { ThetaChart } from "@/components/cat/theta-chart";
 import { formatSaeb } from "@/lib/saeb";
@@ -304,8 +306,39 @@ function SelectionScreen() {
     queryFn: () => catApi.getFilters(),
   });
 
+  const { data: turmas } = useStudentTurmas();
+
+  const { anoDetectado, turmaNome } = useMemo(() => {
+    if (!turmas?.length || !filters?.length) {
+      return { anoDetectado: null as string | null, turmaNome: null as string | null };
+    }
+    const anosDisponiveis = Array.from(
+      new Set(filters.flatMap((f) => f.anos))
+    );
+    for (const turma of turmas) {
+      const parsed = parseAno(turma.Nome);
+      if (!parsed) continue;
+      const match = matchAnoInFilters(parsed, anosDisponiveis);
+      if (match) return { anoDetectado: match, turmaNome: turma.Nome };
+    }
+    return { anoDetectado: null, turmaNome: turmas[0]?.Nome ?? null };
+  }, [turmas, filters]);
+
+  useEffect(() => {
+    if (anoDetectado && !selectedAno) {
+      setSelectedAno(anoDetectado);
+    }
+  }, [anoDetectado, selectedAno]);
+
   const selectedFilter = filters?.find((f) => f.disciplina === selectedDisciplina);
   const anos = selectedFilter?.anos ?? [];
+
+  const disciplinasDisponiveis = useMemo(() => {
+    if (!filters) return [];
+    if (!anoDetectado) return filters;
+    return filters.filter((f) => f.anos.includes(anoDetectado));
+  }, [filters, anoDetectado]);
+
   const canStart = selectedDisciplina && selectedAno;
 
   const sortedAnos = [...anos].sort((a, b) => {
@@ -326,7 +359,9 @@ function SelectionScreen() {
         <div className="text-center space-y-3">
           <h1 className="text-2xl font-bold tracking-tight">Iniciar Teste</h1>
           <p className="text-sm text-muted-foreground leading-relaxed max-w-sm mx-auto">
-            Selecione a disciplina e a série para começar.
+            {anoDetectado
+              ? "Selecione a disciplina para começar."
+              : "Selecione a disciplina e a série para começar."}
           </p>
         </div>
 
@@ -336,18 +371,34 @@ function SelectionScreen() {
           </div>
         ) : (
           <>
+            {anoDetectado && (
+              <div className="flex items-center justify-center gap-2 rounded-xl border border-border/60 bg-muted/30 px-3 py-2.5 animate-in fade-in slide-in-from-top-1 duration-200">
+                <span className="text-[10px] font-medium uppercase tracking-wider text-muted-foreground">
+                  Sua série
+                </span>
+                <Badge variant="secondary" className="text-[11px] px-2 py-0.5">
+                  {anoDetectado}
+                </Badge>
+                {turmaNome && (
+                  <span className="text-[11px] text-muted-foreground">
+                    · {turmaNome}
+                  </span>
+                )}
+              </div>
+            )}
+
             <div className="space-y-3">
               <label className="text-xs font-medium uppercase tracking-wider text-muted-foreground">
                 Disciplina
               </label>
               <div className="grid grid-cols-2 gap-2">
-                {filters?.map((f) => (
+                {disciplinasDisponiveis.map((f) => (
                   <button
                     key={f.disciplina}
                     type="button"
                     onClick={() => {
                       setSelectedDisciplina(selectedDisciplina === f.disciplina ? null : f.disciplina);
-                      setSelectedAno(null);
+                      if (!anoDetectado) setSelectedAno(null);
                     }}
                     className={`flex items-center justify-between rounded-xl border p-3 text-left transition-all duration-150 cursor-pointer ${
                       selectedDisciplina === f.disciplina
@@ -359,10 +410,15 @@ function SelectionScreen() {
                     <Badge variant="secondary" className="text-[10px] px-1.5 py-0 font-mono">{f.total}</Badge>
                   </button>
                 ))}
+                {disciplinasDisponiveis.length === 0 && (
+                  <p className="col-span-2 text-center text-sm text-muted-foreground py-4">
+                    Nenhuma disciplina disponível para sua série.
+                  </p>
+                )}
               </div>
             </div>
 
-            {selectedDisciplina && (
+            {selectedDisciplina && !anoDetectado && (
               <div className="space-y-3 animate-in fade-in slide-in-from-top-2 duration-200">
                 <label className="text-xs font-medium uppercase tracking-wider text-muted-foreground">
                   Série / Ano
