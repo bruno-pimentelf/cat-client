@@ -40,5 +40,13 @@ export async function login(payload: LoginPayload): Promise<LoginResponse> {
     throw new AuthApiError(message, res.status);
   }
 
-  return res.json();
+  const data = await res.json();
+  if (!data?.token || typeof data.token !== "string" || !data?.usuario) {
+    console.error("[auth] resposta inesperada do /api/login", data);
+    throw new AuthApiError(
+      "Resposta de login em formato inesperado",
+      500
+    );
+  }
+  return data as LoginResponse;
 }

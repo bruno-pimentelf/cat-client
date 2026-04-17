@@ -33,13 +33,18 @@ async function request<T>(path: string, options?: RequestInit): Promise<T> {
     headers,
   });
 
-  if (res.status === 401) {
+  if (res.status === 401 || res.status === 403) {
+    const body = await res.clone().json().catch(() => ({}));
+    console.warn(
+      `[auth] ${res.status} em ${path}. Limpando sessão. detail:`,
+      body?.detail ?? body
+    );
     authStorage.clearAuth();
     if (typeof window !== "undefined" && !window.location.pathname.startsWith("/login")) {
       const next = encodeURIComponent(window.location.pathname + window.location.search);
       window.location.href = `/login?next=${next}`;
     }
-    throw new ApiError("Sessão expirada", 401);
+    throw new ApiError("Sessão expirada", res.status);
   }
 
   if (!res.ok) {
