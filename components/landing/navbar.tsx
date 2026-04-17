@@ -1,5 +1,6 @@
 "use client";
 
+import Image from "next/image";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { useEffect, useRef, useState } from "react";
@@ -42,7 +43,14 @@ export function Navbar() {
     <header className="fixed inset-x-0 top-0 z-50 border-b border-transparent backdrop-blur-xl bg-background/80">
       <div className="mx-auto max-w-6xl px-4 sm:px-6 flex h-14 items-center justify-between">
         <Link href="/" className="flex items-center gap-2">
-          <span className="text-sm font-mono font-bold tracking-[0.15em]">CAT</span>
+          <Image
+            src="/trieduc-logo.png"
+            alt="TRIEduc"
+            width={1075}
+            height={274}
+            priority
+            className="h-7 w-auto dark:invert"
+          />
         </Link>
 
         <nav className="hidden sm:flex items-center gap-6">

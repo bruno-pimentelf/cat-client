@@ -1,6 +1,7 @@
 "use client";
 
 import { Suspense, useEffect, useState } from "react";
+import Image from "next/image";
 import Link from "next/link";
 import { useRouter, useSearchParams } from "next/navigation";
 import { Button } from "@/components/ui/button";
@@ -67,17 +68,23 @@ function LoginContent() {
   return (
     <div className="flex min-h-svh flex-col items-center justify-center px-4 py-12">
       <div className="w-full max-w-sm space-y-8">
-        <div className="text-center space-y-3">
-          <Link
-            href="/"
-            className="inline-block text-xs font-mono font-bold tracking-[0.15em] text-muted-foreground hover:text-foreground transition-colors"
-          >
-            CAT
+        <div className="text-center space-y-4">
+          <Link href="/" className="inline-block">
+            <Image
+              src="/trieduc-logo.png"
+              alt="TRIEduc"
+              width={1075}
+              height={274}
+              priority
+              className="h-10 w-auto dark:invert"
+            />
           </Link>
-          <h1 className="text-2xl font-bold tracking-tight">Entrar</h1>
-          <p className="text-sm text-muted-foreground leading-relaxed">
-            Acesse sua conta para iniciar um teste.
-          </p>
+          <div className="space-y-2">
+            <h1 className="text-2xl font-bold tracking-tight">Entrar</h1>
+            <p className="text-sm text-muted-foreground leading-relaxed">
+              Acesse sua conta para iniciar um teste.
+            </p>
+          </div>
         </div>
 
         <form onSubmit={handleSubmit} className="space-y-5">
