@@ -1,3 +1,4 @@
+import { authStorage } from "@/lib/auth-storage";
 import type {
   CreateSessionPayload,
   FilterOption,
@@ -7,7 +8,7 @@ import type {
 
 const API_URL = process.env.NEXT_PUBLIC_CAT_API_URL || "http://localhost:8000";
 
-class ApiError extends Error {
+export class ApiError extends Error {
   status: number;
   constructor(message: string, status: number) {
     super(message);
@@ -16,10 +17,30 @@ class ApiError extends Error {
 }
 
 async function request<T>(path: string, options?: RequestInit): Promise<T> {
+  const token = authStorage.getToken();
+
+  const headers: Record<string, string> = {
+    "Content-Type": "application/json",
+    ...((options?.headers as Record<string, string>) ?? {}),
+  };
+
+  if (token) {
+    headers["Authorization"] = `Bearer ${token}`;
+  }
+
   const res = await fetch(`${API_URL}${path}`, {
-    headers: { "Content-Type": "application/json", ...options?.headers },
     ...options,
+    headers,
   });
+
+  if (res.status === 401) {
+    authStorage.clearAuth();
+    if (typeof window !== "undefined" && !window.location.pathname.startsWith("/login")) {
+      const next = encodeURIComponent(window.location.pathname + window.location.search);
+      window.location.href = `/login?next=${next}`;
+    }
+    throw new ApiError("Sessão expirada", 401);
+  }
 
   if (!res.ok) {
     const body = await res.json().catch(() => ({}));
